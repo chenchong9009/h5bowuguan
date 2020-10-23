@@ -1,0 +1,14 @@
+@charset "UTF-8";
+* { max-height: 999999px; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body { position: relative; -webkit-text-size-adjust: none !important; /*iphone手机文字显示兼容 Font Boosting*/ background-color: #fff; font-family: "SimSun", "syst-bold"; }
+
+body { font-size: 0; line-height: 1.5; }
+
+ul { list-style: none; }
+
+a { text-decoration: none; }
+
+@font-face { font-family: "fzlb"; src: url("../font/fzlb/font/fzlb.eot"); src: url("../font/fzlb/font/fzlb.eot?#font-spider") format("embedded-opentype"), url("../font/fzlb/font/fzlb.woff") format("woff"), url("../font/fzlb/font/fzlb.ttf") format("truetype"), url("../font/fzlb/font/fzlb.svg") format("svg"); font-weight: normal; font-style: normal; -webkit-font-smoothing: antialiased; -mox-osx-font-smoothing: grayscale; }
+
+@font-face { font-family: "syst-bold"; src: url("../font/syst-bold/font/syst-bold.eot"); src: url("../font/syst-bold/font/syst-bold.eot?#font-spider") format("embedded-opentype"), url("../font/syst-bold/font/syst-bold.woff") format("woff"), url("../font/syst-bold/font/syst-bold.ttf") format("truetype"), url("../font/syst-bold/font/syst-bold.svg") format("svg"); font-weight: normal; font-style: normal; -webkit-font-smoothing: antialiased; -mox-osx-font-smoothing: grayscale; }

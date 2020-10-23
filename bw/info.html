@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>正定博物馆</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="shortcut icon" href="">
+    <link href="css/swiper.min.css" rel="stylesheet">
+   
+    <script src="js/jquery-1.11.0.js"></script>
+    <script src="js/m_jx.js"></script>
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/content.css" rel="stylesheet"></head>
+    <script src="js/wow.min.js"></script>
+<style>
+  
+  .musicanimate { -webkit-animation: musicanimate 2s linear infinite; animation: musicanimate 2s linear infinite;}
+@-webkit-keyframes musicanimate {
+    0% {transform: rotate(0deg);-webkit-transform: rotate(0deg);}
+    50% {transform: rotate(180deg); -webkit-transform: rotate(180deg);}
+    100% {transform: rotate(360deg); -webkit-transform: rotate(360deg);}
+}
+
+</style>
+<body>
+  
+
+    <div id="main1" class="font_Light">
+        <div class="info pr" >
+            <div class="pa info_ding">
+              <a href="list.html"><image src="images/fanhui.png" class="tubiao1 fanhui" /></a>
+                <audio autoplay="autoplay" loop="" id="bgmusic" src=""></audio>
+                <div class="tubiao1 music  musicanimate"></div>  
+                <image src="images/btn2.png" class="tubiao1 fenxiang" />
+            </div>
+            <div class="info5">
+                <div class="banner_info">
+                    <div class="kvswiper swiper-container">
+                        <div class="swiper-wrapper">
+
+                        </div>
+                        <div class="swiper-pagination "></div>
+                    </div>
+                </div>
+                <div class="info5_bott">
+
+                </div>
+
+            </div>
+            <p class="guding1">正定县博物馆 版权所有 备案号:<a href="https://beian.miit.gov.cn">冀ICP备2020025264号-1</a></p>
+            <div class="info5_bott1">
+                <image src="images/bg_bott.png" class="w100" />
+            </div>
+          
+        </div> 
+              
+    </div>
+    <div class="tan">
+        <image src="images/guan.png" class="w100 guan" />
+        <div class="fenxiang1">
+           
+            <image src="images/shareimg.png" class="w100" />
+        </div>
+    </div>
+    
+
+    <!--main end-->
+    <script src="js/swiper.min.js"></script>
+   
+    <script>
+        $(function(){
+            // $(".fanhui").click(function(){
+            //     window.history.back(); 
+            // })
+
+
+            musicOn=1;
+            var bgm=document.getElementById('bgmusic');
+            if(isiOS()){
+                document.addEventListener("WeixinJSBridgeReady", function () {
+                    document.getElementById('bgmusic').load();
+                    audioAutoPlay("bgmusic");
+                }, false);
+            }else{
+                bgm.play();
+                // audioAutoPlay("bgmusic");
+            }
+            musicicon(bgm);
+            // 
+
+            //音乐暂停或播放
+            function musicicon(audiop){
+                var music=$(".music");
+                music.on("touchend",function(){
+                    if(musicOn==1){
+                        audiop.pause();
+                        music.removeClass('musicanimate');
+                        music.css({"background": "url('./images/music-off.png') no-repeat", "background-size": "100% 100%"});
+                        musicOn=0;
+                    }else{
+                        audiop.play();
+                        music.addClass('musicanimate');
+                        music.css({"background": "url('./images/btn1.png') no-repeat", "background-size": "100% 100%"});
+                        musicOn=1;
+                    }
+                });
+            }
+
+        // 
+
+            function audioAutoPlay(id){
+                var audio = document.getElementById(id),
+                    play = function(){
+                        audio.play();
+                        document.removeEventListener("touchstart",play, false);
+                    };
+                audio.play();
+                document.addEventListener("touchstart",play, false);
+            }
+            function isiOS(){
+                        var u = navigator.userAgent;
+                        // var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+                        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+                        if(isiOS){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+
+            // 
+         (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            }
+           })(jQuery);
+           var id1 = $.getUrlParam("id");
+           console.log(id1)
+           var baseURL = 'http://www.zdxbwg.com/api/bwcont'
+           var baseURL1 = 'http://www.zdxbwg.com/api/findnum'
+
+           $.ajax({
+            type: "post",
+            url: baseURL1,
+            dataType: "json",
+            data: {
+                id: id1,
+            },
+            success: function (data) {
+                console.log(data)
+            },
+            error: function (data) { //提交失败执行
+                alert(data.message)
+            }
+           })
+          
+           $.ajax({
+            type: "post",
+            url: baseURL,
+            dataType: "json",
+            data: {
+                id: id1,
+            },
+            success: function (data) { //提交成功执行
+               
+              console.log(data)
+              $("#bgmusic").attr("src",'')
+             setTimeout(function(){
+                $("#bgmusic").attr("src",data.data.cont.music)
+             },600)
+             if( !data.data.cont.bjimg){
+                $(".info").css({
+                'background':'url('+data.data.cont.bjimg+') repeat'
+              })
+             }
+              var dataPage = data.data.cont;
+              var str1 = "";
+              var  str ="";
+              $.each(data.data.lbimg,function(i,n){  
+                str1+=`
+                <div class="swiper-slide">
+                    <img class="w100" src="`+n+`" alt="">
+                </div>        
+              `
+              })
+              $(".banner_info .swiper-wrapper").append(str1);
+                var mySwiper = new Swiper ('.swiper-container', {
+                    observer: true,//修改swiper自己或子元素时，自动初始化swiper
+                    observeParents: true,//修改swiper的父元素时，自动初始化swiper
+                    loop: true,
+                    speed:1000,
+                    autoplay: false,
+                    autoplayDisableOnInteraction:false,
+                    calculateHeight : false,
+                    preventLinks : false,
+                    pagination: '.swiper-pagination',
+                    paginationClickable :true,
+                   
+                                    
+
+                }) 
+           
+             
+            str+=`
+            <div class="info_center">
+                <h4> <img class="img01" src="images/left1.png" alt=""> `+dataPage.title+` <img class="img01" src="images/left2.png"></h4>`
+                 if(dataPage.year == null){
+                    str+= `<div class="info_center_li" style="display:none"><span class="info_left">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代 :</span><div class="info_right">`+dataPage.year +`</div></div>`
+
+                 }else{
+                    str+= `<div class="info_center_li"><span class="info_left">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;代 :</span><div class="info_right">`+dataPage.year +`</div></div>`
+
+                 }
+                 if(dataPage.type == null){
+                    str+= `<div class="info_center_li"  style="display:none"><span class="info_left">类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别 :</span><div class="info_right">`+dataPage.type +`</div></div>`
+
+                 }else{
+                    str+=` <div class="info_center_li"><span class="info_left">类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别 :</span><div class="info_right">`+dataPage.type +`</div></div>`
+                 }
+                 if(dataPage.size == null){
+                    str+= `<div class="info_center_li"  style="display:none"><span class="info_left">具体尺寸 :</span><div class="info_right">`+dataPage.size +`</div></div>`
+                }else{
+                    str+=`<div class="info_center_li"><span class="info_left">具体尺寸 :</span><div class="info_right">`+dataPage.size +`</div></div>`
+                }
+
+                if(dataPage.laiyuan == null){
+                    str+=` <div class="info_center_li"  style="display:none"><span class="info_left">来源方式 :</span><div class="info_right">`+dataPage.laiyuan+`</div></div>`
+                }else{
+                    str+= `<div class="info_center_li"><span class="info_left">来源方式 :</span><div class="info_right">`+dataPage.laiyuan+`</div></div>`
+                }
+                if(dataPage.cont == null){
+                    str+= ` <div class="info_center_li"  style="display:none"><span class="info_left">描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述 :</span><div class="info_right" style="text-align: justify;">`+dataPage.cont+`</div></div>`
+                }else{
+                    str+= ` <div class="info_center_li"><span class="info_left">描&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;述 :</span><div class="info_right" style="text-align: justify;">`+dataPage.cont+`</div></div>`
+                }
+                 
+                
+                
+                
+
+                
+                
+           ` </div>`
+                 
+            $(".info5_bott").append(str);    
+            },
+            error: function (data) { //提交失败执行
+                alert(data.message)
+            }
+          })
+        })
+        </script>
+ 
+<!-- <script src="js/index.js"></script> -->
+
+<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="js/wxshare.js"></script>
+	<script>
+        sharef();
+        $(".fenxiang").click(function(){
+            $(".tan").show()
+        })
+        $(".guan").click(function(){
+            $(".tan").hide()
+        })
+	</script>
+
+</body>
+
+</html>
